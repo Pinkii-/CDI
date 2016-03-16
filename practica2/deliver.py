@@ -115,6 +115,7 @@ class Tree(object):
         self.right = None
         self.letter = letter
         self.probability = probability
+        self.depth = 0
 
     def __repr__(self):
         return "Letter: \""+self.letter+"\" w/ Probability: "+str(round(self.probability,10))+(' Left '+self.left.letter if self.left != None else '')+(' Right '+self.right.letter if self.right != None else '')+ '\n'
@@ -163,8 +164,13 @@ def huffman_code(src):
     while i+1 < len(treeList):
         p = treeList[i].probability+treeList[i+1].probability
         t = Tree('-'+treeList[i].letter+'+'+treeList[i+1].letter,p)
-        t.left = treeList[i]
-        t.right = treeList[i+1]
+        if treeList[i].depth >= treeList[i+1].depth:
+            t.left = treeList[i]
+            t.right = treeList[i+1]
+        else:
+            t.left = treeList[i+1]
+            t.right = treeList[i]
+        t.depth = max(t.left.depth,t.right.depth)+1
         if p >= 1:
             treeList.insert(len(treeList),t)
             break
@@ -176,12 +182,12 @@ def huffman_code(src):
                 break
         if not inserted:
             treeList.insert(len(treeList),t)
-        print(treeList)
+        # print(treeList)
         i += 2
 
     # print (treeList)
     # print()
-    printTree(treeList[len(treeList)-1],0)
+    # printTree(treeList[len(treeList)-1],0)
 
     ht = huffman_tree(treeList[len(treeList)-1])
 
@@ -197,9 +203,9 @@ def huffman_code(src):
 src_code = [("0",18), ("1",2)]
 # src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
 
-src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
+# src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
 
-print(huffman_code(source_extension(normalize_src(src_code),1)))
+print(huffman_code(source_extension(normalize_src(src_code),2)))
 
 # print (normalize_src(src_code))
 
