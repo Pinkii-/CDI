@@ -243,9 +243,9 @@ def get_compressed_file_size(key):
 	txt_randJoint_size = os.stat(resultsPath+str(key)+'_randJoint.txt_procesado').st_size;
 	txt_randJoint_zip_size = os.stat(resultsPath+str(key)+'_randJoint.txt_procesado.zip').st_size;
 
-	print("text processed:           ",txt_procesado_size,  "B  text processed zip          ", txt_procesado_zip_size, "B", "ratio of compression", txt_procesado_zip_size/txt_procesado_size)
-	print("text same entropy:        ",txt_rand_size,	    "B  text same entropy zip       ", txt_rand_zip_size,      "B", "ratio of compression", )
-	print("text same joint entropy:  ",txt_randJoint_size,  "B  text same joint entropy zip ", txt_randJoint_zip_size, "B", "ratio of compression", )
+	print("text processed:           ",txt_procesado_size,  "B  text processed zip          ", txt_procesado_zip_size, "B", "  ratio of compression:", txt_procesado_zip_size/txt_procesado_size)
+	print("text same entropy:        ",txt_rand_size,	    "B  text same entropy zip       ", txt_rand_zip_size,      "B", "  ratio of compression:", txt_rand_zip_size/txt_rand_size)
+	print("text same joint entropy:  ",txt_randJoint_size,  "B  text same joint entropy zip ", txt_randJoint_zip_size, "B", "  ratio of compression:", txt_randJoint_zip_size/txt_randJoint_size)
 	print("--------------------------")
 
 
@@ -291,15 +291,15 @@ print_all_key(get_compressed_file_size)
 
 exit(0)
 
-# We can see that the aleatory text made with the same joint entropy have the exactaly same size when is compressed with zip than the original.
-# We can also appreciate that when we made a text with the same entropy, as the entropy is greater than the joint entropy, the zip made with that text is greater.
+# We can see that the aleatory text made with the same joint entropy is greater in size when is compressed with zip than the original.
+# We can also appreciate that when we made a text with the same entropy, as the entropy is greater than the joint entropy, the zip made with that text is the greatest.
 
 
 # 	Entropies:
 # 4.040598102961624 DE_Kafka_Metamorphosis
 # 4.083822097557767 EN_CaptainsCourageous
 # 4.058186751934843 EN_Kafka_Metamorphosis
-# 4.067542780122727 EN_Kafka_TheTrial
+# 4.067542780122726 EN_Kafka_TheTrial
 # 3.967862196576073 ES_AlonsoDeVillegasSelvago_ComediaSerafina
 # 3.9687994956241908 ES_Cervantes_DonQuijote
 # 3.9767033188144327 ES_Cervantes_ViajeAlParnaso
@@ -333,52 +333,51 @@ exit(0)
 
 #   Size of the files
 # DE_Kafka_Metamorphosis :
-# text processed:            117360 B  text processed zip           40669 B
-# text same entropy:         117357 B  text same entropy zip        68374 B
-# text same joint entropy:   117357 B  text same joint entropy zip  40669 B
+# text processed:            117360 B  text processed zip           40669 B    ratio of compression: 0.3465320381731425
+# text same entropy:         117357 B  text same entropy zip        68281 B    ratio of compression: 0.5818229845684535
+# text same joint entropy:   117357 B  text same joint entropy zip  57720 B    ratio of compression: 0.4918326133081111
 # --------------------------
 # EN_CaptainsCourageous :
-# text processed:            276592 B  text processed zip           104628 B
-# text same entropy:         276589 B  text same entropy zip        161585 B
-# text same joint entropy:   276589 B  text same joint entropy zip  104628 B
+# text processed:            276592 B  text processed zip           104628 B   ratio of compression: 0.3782755828078903
+# text same entropy:         276589 B  text same entropy zip        161635 B   ratio of compression: 0.5843869423585175
+# text same joint entropy:   276589 B  text same joint entropy zip  140620 B   ratio of compression: 0.5084077819436058
 # --------------------------
 # EN_Kafka_Metamorphosis :
-# text processed:            115391 B  text processed zip           39138 B
-# text same entropy:         115388 B  text same entropy zip        67444 B
-# text same joint entropy:   115388 B  text same joint entropy zip  39138 B
+# text processed:            115391 B  text processed zip           39138 B    ratio of compression: 0.339177232193152
+# text same entropy:         115388 B  text same entropy zip        67504 B    ratio of compression: 0.5850175061531528
+# text same joint entropy:   115388 B  text same joint entropy zip  57756 B    ratio of compression: 0.5005373175720179
 # --------------------------
 # EN_Kafka_TheTrial :
-# text processed:            432819 B  text processed zip           143087 B
-# text same entropy:         432816 B  text same entropy zip        251640 B
-# text same joint entropy:   432816 B  text same joint entropy zip  143087 B
+# text processed:            432819 B  text processed zip           143087 B   ratio of compression: 0.3305931578789286
+# text same entropy:         432816 B  text same entropy zip        251571 B   ratio of compression: 0.58124237551292
+# text same joint entropy:   432816 B  text same joint entropy zip  216157 B   ratio of compression: 0.49942007689179696
 # --------------------------
 # ES_AlonsoDeVillegasSelvago_ComediaSerafina :
-# text processed:            433454 B  text processed zip           153330 B
-# text same entropy:         433451 B  text same entropy zip        247018 B
-# text same joint entropy:   433451 B  text same joint entropy zip  153330 B
+# text processed:            433454 B  text processed zip           153330 B   ratio of compression: 0.3537399585653841
+# text same entropy:         433451 B  text same entropy zip        247071 B   ratio of compression: 0.5700090667687928
+# text same joint entropy:   433451 B  text same joint entropy zip  206967 B   ratio of compression: 0.47748649789710945
 # --------------------------
 # ES_Cervantes_DonQuijote :
-# text processed:            2021951 B  text processed zip           693016 B
-# text same entropy:         2021948 B  text same entropy zip        1149575 B
-# text same joint entropy:   2021948 B  text same joint entropy zip  693016 B
+# text processed:            2021951 B  text processed zip           693016  B ratio of compression: 0.34274618920043065
+# text same entropy:         2021948 B  text same entropy zip        1150107 B ratio of compression: 0.5688113640904712
+# text same joint entropy:   2021948 B  text same joint entropy zip  954074  B ratio of compression: 0.4718588212951075
 # --------------------------
 # ES_Cervantes_ViajeAlParnaso :
-# text processed:            285893 B  text processed zip           105126 B
-# text same entropy:         285890 B  text same entropy zip        163534 B
-# text same joint entropy:   285890 B  text same joint entropy zip  105126 B
+# text processed:            285893 B  text processed zip           105126 B   ratio of compression: 0.3677109967715194
+# text same entropy:         285890 B  text same entropy zip        163354 B   ratio of compression: 0.5713875966280737
+# text same joint entropy:   285890 B  text same joint entropy zip  137828 B   ratio of compression: 0.4821015075728427
 # --------------------------
 # FR_PaulDesjardins_LaDemocratieSpiritualiste :
-# text processed:            44178 B  text processed zip           17174 B
-# text same entropy:         44175 B  text same entropy zip        25815 B
-# text same joint entropy:   44175 B  text same joint entropy zip  17174 B
+# text processed:            44178 B  text processed zip           17174 B     ratio of compression: 0.38874552944904706
+# text same entropy:         44175 B  text same entropy zip        25823 B     ratio of compression: 0.584561403508772
+# text same joint entropy:   44175 B  text same joint entropy zip  22591 B     ratio of compression: 0.5113978494623656
 # --------------------------
 # IT_PaoloMantegazza_ASediciAnni :
-# text processed:            119953 B  text processed zip           44766 B
-# text same entropy:         119950 B  text same entropy zip        68792 B
-# text same joint entropy:   119950 B  text same joint entropy zip  44766 B
+# text processed:            119953 B  text processed zip           44766 B    ratio of compression: 0.3731961684993289
+# text same entropy:         119950 B  text same entropy zip        68800 B    ratio of compression: 0.5735723218007504
+# text same joint entropy:   119950 B  text same joint entropy zip  59336 B    ratio of compression: 0.49467278032513545
 # --------------------------
 # IT_Various_LaVitaItalianaNelRisorgimientoIII :
-# text processed:            269059 B  text processed zip           99408 B
-# text same entropy:         269056 B  text same entropy zip        153618 B
-# text same joint entropy:   269056 B  text same joint entropy zip  99408 B
-# --------------------------
+# text processed:            269059 B  text processed zip           99408  B   ratio of compression: 0.3694654332321164
+# text same entropy:         269056 B  text same entropy zip        153611 B   ratio of compression: 0.5709257552331113
+# text same joint entropy:   269056 B  text same joint entropy zip  131722 B   ratio of compression: 0.489570944338725
