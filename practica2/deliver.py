@@ -78,7 +78,7 @@ def shannon_fano_code_r(src):
         else:
             src2.append((x,y))
 
-    print("src1", src1,"src2", src2)
+    # print("src1", src1,"src2", src2)
 
     shannon_fano1 = shannon_fano_code_r(src1)
     shannon_fano2 = shannon_fano_code_r(src2)
@@ -107,7 +107,7 @@ def shannon_fano_code(src):
         x,y = mostCommon[n]
         mean_length += y*len(shannon_fano[n])
 
-    return shannon_fano, mean_length
+    return shannon_fano, round(mean_length,10)
 
 class Tree(object):
     def __init__(self, letter, probability):
@@ -121,7 +121,7 @@ class Tree(object):
         return "Letter: \""+self.letter+"\" w/ Probability: "+str(round(self.probability,10))+(' Left '+self.left.letter if self.left != None else '')+(' Right '+self.right.letter if self.right != None else '')+ '\n'
 
     def __str__(self):
-        return self.letter+' '+str(self.probability)
+        return self.letter+' '+str(round(self.probability,10))
 
 def printTree(root,n):
     print ((' '*n)+str(root))
@@ -197,23 +197,23 @@ def huffman_code(src):
         mean_length += len(w)*p
         huffman_c.append(w)
 
-    return huffman_c, mean_length
+    return huffman_c, round(mean_length,10)
 
 
 src_code = [("0",18), ("1",2)]
 src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
 
-# src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
+src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
 
-print(huffman_code(source_extension(normalize_src(src_code),1)))
+print("Huffman     ", huffman_code(source_extension(normalize_src(src_code),1)))
 
-print(shannon_fano_code(source_extension(normalize_src(src_code),1)))
+print("Shannon Fano",shannon_fano_code(source_extension(normalize_src(src_code),1)))
 
 # print (normalize_src(src_code))
 
 # print(huffman_code(normalize_src(src_code)))
 
-# print (entropy (normalize_src(([("0",18), ("1",2)]))))
+# print (entropy (source_extension(normalize_src(([("0",18), ("1",2)])),2)))
 
 # print (entropy (source_fromstring("00000010000000000100")))
 

@@ -97,12 +97,21 @@ def conditional_entropy1(txt,ltr):
 		countLeters[x] = 0
 
 	total = 0.0
-	for x in range(1,len(txt)):
-		last = txt[x-1]
-		current = txt[x]
-		if chr(last) == ltr:
-			total += 1.0
-			countLeters[current] += 1.0
+
+	if type(txt[0]) == type('str'):
+		for x in range(1,len(txt)):
+			last = txt[x-1]
+			current = txt[x]
+			if last == ltr:
+				total += 1.0
+				countLeters[current] += 1.0
+	else:
+		for x in range(1,len(txt)):
+			last = txt[x-1]
+			current = txt[x]
+			if chr(last) == ltr:
+				total += 1.0
+				countLeters[current] += 1.0
 
 	ent = 0.0
 	for x in countLeters:
@@ -224,7 +233,7 @@ def get_compressed_file_size(key):
 	with open(resultsPath+str(key)+'_randJoint.txt_procesado', 'w+') as f: 
 		f.write(txtRand2)
 	with zipfile.ZipFile(resultsPath+str(key)+'_randJoint.txt_procesado.zip', 'w', zipfile.ZIP_DEFLATED) as myzip:
-	 	myzip.write(resultsPath+str(key)+'.txt_procesado');
+	 	myzip.write(resultsPath+str(key)+'_randJoint.txt_procesado');
 
 
 	txt_procesado_size = os.stat(resultsPath+str(key)+'.txt_procesado').st_size;
@@ -234,9 +243,9 @@ def get_compressed_file_size(key):
 	txt_randJoint_size = os.stat(resultsPath+str(key)+'_randJoint.txt_procesado').st_size;
 	txt_randJoint_zip_size = os.stat(resultsPath+str(key)+'_randJoint.txt_procesado.zip').st_size;
 
-	print("texto procesado:             ",txt_procesado_size,"B  texto procesado zip            ", txt_procesado_zip_size, "B")
-	print("texto misma entropia:        ",txt_rand_size,	 "B  texto misma entropia zip       ", txt_rand_zip_size, "B")
-	print("texto misma joint entropia:  ",txt_randJoint_size,"B  texto misma joint entropia zip ", txt_randJoint_zip_size, "B")
+	print("text processed:           ",txt_procesado_size,  "B  text processed zip          ", txt_procesado_zip_size, "B", "ratio of compression", txt_procesado_zip_size/txt_procesado_size)
+	print("text same entropy:        ",txt_rand_size,	    "B  text same entropy zip       ", txt_rand_zip_size,      "B", "ratio of compression", )
+	print("text same joint entropy:  ",txt_randJoint_size,  "B  text same joint entropy zip ", txt_randJoint_zip_size, "B", "ratio of compression", )
 	print("--------------------------")
 
 
@@ -253,6 +262,14 @@ def print_all_key(funct):
 
 
 # MAIN
+
+# txt = "00001"*1000
+
+# print (joint_entropy(txt))
+# print (1/5*conditional_entropy1(txt,'1')+4/5*conditional_entropy1(txt,'0'))
+# print (conditional_entropy(txt))
+
+# exit(0)
 
 filepath = "./*.txt"
 
@@ -274,18 +291,19 @@ print_all_key(get_compressed_file_size)
 
 exit(0)
 
-# Podemos ver que el texto aleatorio creado con la misma joint entropy tiene exactamente el mismo tamaño al comprimirse con zip que el original.
-# También se puede apreciar que al crear un texto con solo la entropia, al se mayor la entropia, el zip crea un archivo comprimido mayor.
+# We can see that the aleatory text made with the same joint entropy have the exactaly same size when is compressed with zip than the original.
+# We can also appreciate that when we made a text with the same entropy, as the entropy is greater than the joint entropy, the zip made with that text is greater.
+
 
 # 	Entropies:
-# 4.040598102961624  DE_Kafka_Metamorphosis
-# 4.083822097557767  EN_CaptainsCourageous
-# 4.058186751934843  EN_Kafka_Metamorphosis
-# 4.067542780122726  EN_Kafka_TheTrial
-# 3.967862196576073  ES_AlonsoDeVillegasSelvago_ComediaSerafina
+# 4.040598102961624 DE_Kafka_Metamorphosis
+# 4.083822097557767 EN_CaptainsCourageous
+# 4.058186751934843 EN_Kafka_Metamorphosis
+# 4.067542780122727 EN_Kafka_TheTrial
+# 3.967862196576073 ES_AlonsoDeVillegasSelvago_ComediaSerafina
 # 3.9687994956241908 ES_Cervantes_DonQuijote
 # 3.9767033188144327 ES_Cervantes_ViajeAlParnaso
-# 3.9612257160034    FR_PaulDesjardins_LaDemocratieSpiritualiste
+# 3.9612257160034 FR_PaulDesjardins_LaDemocratieSpiritualiste
 # 3.9688384340255256 IT_PaoloMantegazza_ASediciAnni
 # 3.9703099397607744 IT_Various_LaVitaItalianaNelRisorgimientoIII
 
@@ -294,11 +312,11 @@ exit(0)
 # 3.6989527052916515 EN_CaptainsCourageous
 # 3.6274865402235106 EN_Kafka_Metamorphosis
 # 3.6547644610702563 EN_Kafka_TheTrial
-# 3.519086455952491  ES_AlonsoDeVillegasSelvago_ComediaSerafina
-# 3.502408092985971  ES_Cervantes_DonQuijote
+# 3.519086455952491 ES_AlonsoDeVillegasSelvago_ComediaSerafina
+# 3.502408092985971 ES_Cervantes_DonQuijote
 # 3.5374260254501433 ES_Cervantes_ViajeAlParnaso
 # 3.5688315884157835 FR_PaulDesjardins_LaDemocratieSpiritualiste
-# 3.575126918655189  IT_PaoloMantegazza_ASediciAnni
+# 3.575126918655189 IT_PaoloMantegazza_ASediciAnni
 # 3.5741291345913537 IT_Various_LaVitaItalianaNelRisorgimientoIII
 
 # 	Condition Entropies:
@@ -306,61 +324,61 @@ exit(0)
 # 3.3140805673456883 EN_CaptainsCourageous
 # 3.1968044525022963 EN_Kafka_Metamorphosis
 # 3.2419899139033683 EN_Kafka_TheTrial
-# 3.070307090346807  ES_AlonsoDeVillegasSelvago_ComediaSerafina
+# 3.070307090346807 ES_AlonsoDeVillegasSelvago_ComediaSerafina
 # 3.0360167875860364 ES_Cervantes_DonQuijote
-# 3.098146412109047  ES_Cervantes_ViajeAlParnaso
+# 3.098146412109047 ES_Cervantes_ViajeAlParnaso
 # 3.1764361252505036 FR_PaulDesjardins_LaDemocratieSpiritualiste
-# 3.181413477829422  IT_PaoloMantegazza_ASediciAnni
+# 3.181413477829422 IT_PaoloMantegazza_ASediciAnni
 # 3.1779464383324845 IT_Various_LaVitaItalianaNelRisorgimientoIII
 
 #   Size of the files
 # DE_Kafka_Metamorphosis :
-# texto procesado:              117360 B  texto procesado zip             40669 B
-# texto misma entropia:         117357 B  texto misma entropia zip        68259 B
-# texto misma joint entropia:   117357 B  texto misma joint entropia zip  40669 B
+# text processed:            117360 B  text processed zip           40669 B
+# text same entropy:         117357 B  text same entropy zip        68374 B
+# text same joint entropy:   117357 B  text same joint entropy zip  40669 B
 # --------------------------
 # EN_CaptainsCourageous :
-# texto procesado:              276592 B  texto procesado zip             104628 B
-# texto misma entropia:         276589 B  texto misma entropia zip        161603 B
-# texto misma joint entropia:   276589 B  texto misma joint entropia zip  104628 B
+# text processed:            276592 B  text processed zip           104628 B
+# text same entropy:         276589 B  text same entropy zip        161585 B
+# text same joint entropy:   276589 B  text same joint entropy zip  104628 B
 # --------------------------
 # EN_Kafka_Metamorphosis :
-# texto procesado:              115391 B  texto procesado zip             39138 B
-# texto misma entropia:         115388 B  texto misma entropia zip        67435 B
-# texto misma joint entropia:   115388 B  texto misma joint entropia zip  39138 B
+# text processed:            115391 B  text processed zip           39138 B
+# text same entropy:         115388 B  text same entropy zip        67444 B
+# text same joint entropy:   115388 B  text same joint entropy zip  39138 B
 # --------------------------
 # EN_Kafka_TheTrial :
-# texto procesado:              432819 B  texto procesado zip             143087 B
-# texto misma entropia:         432816 B  texto misma entropia zip        251670 B
-# texto misma joint entropia:   432816 B  texto misma joint entropia zip  143087 B
+# text processed:            432819 B  text processed zip           143087 B
+# text same entropy:         432816 B  text same entropy zip        251640 B
+# text same joint entropy:   432816 B  text same joint entropy zip  143087 B
 # --------------------------
 # ES_AlonsoDeVillegasSelvago_ComediaSerafina :
-# texto procesado:              433454 B  texto procesado zip             153330 B
-# texto misma entropia:         433451 B  texto misma entropia zip        247054 B
-# texto misma joint entropia:   433451 B  texto misma joint entropia zip  153330 B
+# text processed:            433454 B  text processed zip           153330 B
+# text same entropy:         433451 B  text same entropy zip        247018 B
+# text same joint entropy:   433451 B  text same joint entropy zip  153330 B
 # --------------------------
 # ES_Cervantes_DonQuijote :
-# texto procesado:              2021951 B  texto procesado zip             693016 B
-# texto misma entropia:         2021948 B  texto misma entropia zip        1149783 B
-# texto misma joint entropia:   2021948 B  texto misma joint entropia zip  693016 B
+# text processed:            2021951 B  text processed zip           693016 B
+# text same entropy:         2021948 B  text same entropy zip        1149575 B
+# text same joint entropy:   2021948 B  text same joint entropy zip  693016 B
 # --------------------------
 # ES_Cervantes_ViajeAlParnaso :
-# texto procesado:              285893 B  texto procesado zip             105126 B
-# texto misma entropia:         285890 B  texto misma entropia zip        163501 B
-# texto misma joint entropia:   285890 B  texto misma joint entropia zip  105126 B
+# text processed:            285893 B  text processed zip           105126 B
+# text same entropy:         285890 B  text same entropy zip        163534 B
+# text same joint entropy:   285890 B  text same joint entropy zip  105126 B
 # --------------------------
 # FR_PaulDesjardins_LaDemocratieSpiritualiste :
-# texto procesado:              44178 B  texto procesado zip             17174 B
-# texto misma entropia:         44175 B  texto misma entropia zip        25836 B
-# texto misma joint entropia:   44175 B  texto misma joint entropia zip  17174 B
+# text processed:            44178 B  text processed zip           17174 B
+# text same entropy:         44175 B  text same entropy zip        25815 B
+# text same joint entropy:   44175 B  text same joint entropy zip  17174 B
 # --------------------------
 # IT_PaoloMantegazza_ASediciAnni :
-# texto procesado:              119953 B  texto procesado zip             44766 B
-# texto misma entropia:         119950 B  texto misma entropia zip        68838 B
-# texto misma joint entropia:   119950 B  texto misma joint entropia zip  44766 B
+# text processed:            119953 B  text processed zip           44766 B
+# text same entropy:         119950 B  text same entropy zip        68792 B
+# text same joint entropy:   119950 B  text same joint entropy zip  44766 B
 # --------------------------
 # IT_Various_LaVitaItalianaNelRisorgimientoIII :
-# texto procesado:              269059 B  texto procesado zip             99408 B
-# texto misma entropia:         269056 B  texto misma entropia zip        153522 B
-# texto misma joint entropia:   269056 B  texto misma joint entropia zip  99408 B
+# text processed:            269059 B  text processed zip           99408 B
+# text same entropy:         269056 B  text same entropy zip        153618 B
+# text same joint entropy:   269056 B  text same joint entropy zip  99408 B
 # --------------------------
