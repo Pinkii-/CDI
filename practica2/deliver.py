@@ -127,10 +127,16 @@ def shannon_fano_code_r(src):
 
     for n in range(1,len(mostCommon)):
         x,y = mostCommon[n]
+        last = current
         current += y
         # print (x, y, current, total/2.0)
         if current < total/2.0:
             src1.append((x,y))
+        elif current > total/2.0 and last < total/2.0:
+            if total/2 - last < current - total/2:
+                src2.append((x,y))
+            else:
+                src1.append((x,y))
         else:
             src2.append((x,y))
 
@@ -273,6 +279,8 @@ src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), (
 src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
 
 src_code = [("a1",0.36),("a2",0.18),("a3",0.18),("a4",0.12),("a5",0.09),("a6",0.07)]
+
+src_code = [("A",15),("B",7),("C",6),("D",6),("E",5)]
 
 print("Shannon     ",shannon_code(source_extension(normalize_src(src_code),1)))
 
