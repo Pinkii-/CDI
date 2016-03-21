@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 
-from math import log2
+from math import log2, ceil
 from collections import Counter
 
 def normalize_src(src):
@@ -46,6 +46,62 @@ def source_extension(src, k):
             src_extended.append((x+w,round(y*z,10)))
 
     return source_extension(src_extended,k-1)
+
+def plus1(bit,string):
+    aux = list(string)
+    bitAux = len(aux)-1-bit
+    if aux[bitAux] == '0':
+        aux[bitAux] = '1'
+        return "".join(aux)
+    else:
+        aux[bitAux] = '0'
+        return plus1(bit+1,"".join(aux))
+
+
+def shannon_code(src):
+    if len(src) == 0:
+        return [],0
+
+    lengthSrc = []
+    c = Counter()
+    for x,y in src:
+        lengthSrc.append((x,ceil(log2(1.0/y))))
+        c[x] = ceil(log2(1.0/y))
+
+    
+    mostCommon = c.most_common()
+    firstLetter, firstLength = mostCommon[len(mostCommon)-1]
+    current = '0'*firstLength
+    orderedList = [current]
+    for x in range(len(mostCommon)-2,-1,-1):
+        letter, length = mostCommon[x]
+        
+        current = plus1(0,current)
+        # if (length == len(current)):
+        # else:
+        
+        diff = length - len(current)
+        current += '0'*diff
+
+        orderedList.append(current)
+
+    orderedList.reverse()
+
+    result = []
+    mean_length = 0
+    for x in range(len(src)):
+        letter,p=src[x]
+        for y in range(len(mostCommon)):
+            w,_ = mostCommon[y]
+            if letter == w:
+                result.append(orderedList[y])
+                mean_length += p*len(orderedList[y])
+                break
+
+    return result, round(mean_length,10)
+
+
+
 
 def shannon_fano_code_r(src):
     if len(src) <= 1:
@@ -103,11 +159,18 @@ def shannon_fano_code(src):
         c[x] = y
     mostCommon = c.most_common()
     mean_length = 0
-    for n in range(len(shannon_fano)):
-        x,y = mostCommon[n]
-        mean_length += y*len(shannon_fano[n])
 
-    return shannon_fano, round(mean_length,10)
+    result = []
+    for n in range(len(src)):
+        x, y = src[n]
+        for n2 in range(len(mostCommon)):
+            w,z = mostCommon[n2]
+            if x == w:
+                result.append(shannon_fano[n2])
+                mean_length += z*len(shannon_fano[n])
+                break
+
+    return result, round(mean_length,10)
 
 class Tree(object):
     def __init__(self, letter, probability):
@@ -135,17 +198,17 @@ def printTree(root,n):
 
 def huffman_tree(tree):
     if tree.left == None and tree.right == None:
-        return [('',tree.probability)]
+        return [('',tree.probability, tree.letter)]
 
     l = []
     if tree.right != None:
         tl = huffman_tree(tree.right)
-        for word,probability in tl:
-            l.append(('0'+word, probability))
+        for word,probability,letter in tl:
+            l.append(('0'+word, probability, letter))
     if tree.left != None:
         tl = huffman_tree(tree.left)
-        for word,probability in tl:
-            l.append(('1'+word, probability))
+        for word,probability,letter in tl:
+            l.append(('1'+word, probability, letter))
 
     return l
 
@@ -193,21 +256,30 @@ def huffman_code(src):
 
     huffman_c = []
     mean_length = 0
-    for w,p in ht:
-        mean_length += len(w)*p
-        huffman_c.append(w)
+    for x,y in src:
+        for w,p,l in ht:
+            if x == l:
+                mean_length += len(w)*p
+                huffman_c.append(w)
 
     return huffman_c, round(mean_length,10)
 
 
 src_code = [("0",18), ("1",2)]
+src_code = source_extension(src_code,2)
+
 src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
 
 src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
 
-print("Huffman     ", huffman_code(source_extension(normalize_src(src_code),1)))
+src_code = [("a1",0.36),("a2",0.18),("a3",0.18),("a4",0.12),("a5",0.09),("a6",0.07)]
+
+print("Shannon     ",shannon_code(source_extension(normalize_src(src_code),1)))
 
 print("Shannon Fano",shannon_fano_code(source_extension(normalize_src(src_code),1)))
+
+print("Huffman     ", huffman_code(source_extension(normalize_src(src_code),1)))
+
 
 # print (normalize_src(src_code))
 
