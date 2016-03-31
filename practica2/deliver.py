@@ -270,17 +270,75 @@ def huffman_code(src):
 
     return huffman_c, round(mean_length,10)
 
+def translate(src,funcs,string):
+    print()
+    print("Source:", src)
+    print("String:",string)
 
-src_code = [("0",18), ("1",2)]
+    for func in funcs:
+        print()
+        print("---------------",func.__name__,"--------------")
+        output = []
+        code,mean_len = func(src)
+        offset = 0
+        for i in range(len(string)):
+            i = i+offset
+            if i >= len(string):
+                break
+            for j in range(len(src)):
+                letter,_ = src[j]
+                b = True
+                for n in range(len(letter)):
+                    if string[i+n] != letter[n]:
+                        b = False
+                        break
+                if b:
+                    offset += len(letter)-1
+                    output.append((letter,code[j]))
+                    break
+
+        solution1 = []
+        solution2 = []
+        for x in range(len(output)):
+            solution1.append([])
+            solution2.append([])
+            for i in range(len(output)):
+                letter, code = output[i]
+                if x != i:
+                    solution1[x].append(letter)
+                    solution2[x].append(code)
+                else:
+                    solution1[x].append('['+letter+']')
+                    solution2[x].append('['+code+']')
+
+
+        for x in range(len(solution1)):
+            print ()
+            print ("Letter", x,"-th")
+            print("".join(solution1[x]))
+            print("".join(solution2[x]))
+
+        # print(output)
+
+
+src_code = [("0",0.9), ("1",0.1)]
 src_code = source_extension(src_code,2)
 
-src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
+# src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
 
-src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
+# src_code = [("a",0.05), ("d",0.05), ('e',0.2), ('f',0.025), ('h',0.075), ('j',0.1),('m',0.025),('n',0.125),('p',0.025),('s',0.05),('t',0.15),('u',0.1),('z',0.025)]
 
-src_code = [("a1",0.36),("a2",0.18),("a3",0.18),("a4",0.12),("a5",0.09),("a6",0.07)]
+# src_code = [("a1",0.36),("a2",0.18),("a3",0.18),("a4",0.12),("a5",0.09),("a6",0.07)]
 
-src_code = [("A",15),("B",7),("C",6),("D",6),("E",5)]
+# src_code = [("A",15),("B",7),("C",6),("D",6),("E",5)]
+
+translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"11111011")
+
+translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"00000100")
+
+print ()
+
+print (src_code)
 
 print("Shannon     ",shannon_code(source_extension(normalize_src(src_code),1)))
 
