@@ -40,12 +40,15 @@ def source_extension(src, k):
     if k == 1:
         return src
 
-    src_extended = []
-    for x,y in src:
-        for w,z in src:
-            src_extended.append((x+w,round(y*z,10)))
+    src_original = src
+    for n in range(k-1):
+        src_extended = []
+        for x,y in src:
+            for w,z in src_original:
+                src_extended.append((x+w,round(y*z,10)))
+        src = src_extended
 
-    return source_extension(src_extended,k-1)
+    return src
 
 def plus1(bit,string):
     aux = list(string)
@@ -322,7 +325,9 @@ def translate(src,funcs,string):
 
 
 src_code = [("0",0.9), ("1",0.1)]
-src_code = source_extension(src_code,2)
+src_code = source_extension(src_code,3)
+
+# print ("source_extension 3" ,src_code)
 
 # src_code = [("a",3), ("1",5), ("2",9), ("3",11), ("4",14), ("5",19), ("6",33), ("7",44), ("8",62)]
 
@@ -332,9 +337,9 @@ src_code = source_extension(src_code,2)
 
 # src_code = [("A",15),("B",7),("C",6),("D",6),("E",5)]
 
-translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"11111011")
+translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"111110111") # si el string no se puede descodificar, el programa peta
 
-translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"00000100")
+translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"000001000")
 
 print ()
 
