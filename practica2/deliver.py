@@ -273,7 +273,7 @@ def huffman_code(src):
 
     return huffman_c, round(mean_length,10)
 
-def translate(src,funcs,string):
+def encode(src,funcs,string):
     print()
     print("Source:", src)
     print("String:",string)
@@ -337,9 +337,9 @@ src_code = source_extension(src_code,3)
 
 # src_code = [("A",15),("B",7),("C",6),("D",6),("E",5)]
 
-translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"111110111") # si el string no se puede descodificar, el programa peta
+encode(src_code,[shannon_code,shannon_fano_code,huffman_code],"111110111") # si el string no se puede descodificar, el programa peta
 
-translate(src_code,[shannon_code,shannon_fano_code,huffman_code],"000001000")
+encode(src_code,[shannon_code,shannon_fano_code,huffman_code],"000001000")
 
 print ()
 
