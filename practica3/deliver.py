@@ -155,12 +155,12 @@ def arithmetic_decode(bin,src,k,l):
 
 src_code = [("0",0.9), ("1",0.1)]
 k = 6
-string = '0'*10000
+string = '00100110010011010100100100000110010000'
 # print ("String to encode and decode:",string)
 # print ("Encoded:",arithmetic_encode(string,src_code,k))
 decoded = arithmetic_decode(arithmetic_encode(string,src_code,k),src_code,k, len(string))
-# print ("Decoded:",decoded, "==", string,"->",decoded == string)
-print(decoded == string)
+print ("Decoded:",decoded, "==", string,"->",decoded == string)
+# print(decoded == string)
 # print (arithmetic_decode('11111011',src_code,k, len(string)))
 
 # def encuentraBug():
