@@ -60,26 +60,41 @@ def arithmetic_encode(string,src,k):
         alfa = intToBinaryString(newAlfa,k)
         beta = intToBinaryString(newBeta,k)
 
+        # print("1 alfa",alfa,"beta",beta,"c",c)
+
         # rescaling Step
         while beta[0] == alfa[0]:
             c += alfa[0]
+            # print (' '*5,"enconding",c,"u",u)
+            c += ('1' if alfa[0] == '0' else '0') * u
+            # print (' '*5,c, "~",alfa[0])
             alfa = alfa[1:]+'0'
             beta = beta[1:]+'1'
-            c += ('1' if alfa[0] == '0' else '0') * u
             u = 0
+
+        # print("2 alfa",alfa,"beta",beta,"c",c)
 
         # underflow prevent
         while alfa[1] == '1' and beta[1] == '0':
             u += 1
             alfa = alfa[0] + alfa[2:] + '0'
             beta = beta[0] + beta[2:] + '1'
+            # print ("underflow Encoding", u)
 
+        # print("3 alfa",alfa,"beta",beta, "c",c)
+        # print()
+
+
+    # print("")
+    # print(c+'1')
+    # print("")
+    # print("")
     return c + '1'
 
 def arithmetic_decode(bin,src,k,l):
     alfa = '0'*k
     beta = '1'*k
-    bin += '0'*1000
+    bin += '0'*(k**2)
     gama = bin[:k]
 
     x = ''
@@ -93,7 +108,7 @@ def arithmetic_decode(bin,src,k,l):
         alfaInt = binaryStringToInt(alfa)
         betaInt = binaryStringToInt(beta)
         # print (alfaInt, gamaInt, betaInt)
-        # print (alfa,'0'*(k-len(gama)) +gama,beta)
+        # print (alfa,gama,beta)
         delta = betaInt - alfaInt + 1
         for letter, prob in src:
             piRight = piLeft + prob
@@ -127,6 +142,7 @@ def arithmetic_decode(bin,src,k,l):
             beta = beta[0] + beta[2:] + '1'
             bin = bin[:offset+1] + bin[offset+2:]
             gama = bin[offset:k+offset]
+            
             # print ("underflow:",alfa,gama,beta, offset)
 
         
@@ -139,9 +155,20 @@ def arithmetic_decode(bin,src,k,l):
 
 src_code = [("0",0.9), ("1",0.1)]
 k = 6
-string = '1010010100'
-print ("String to encode and decode:",string)
-print ("Encoded:",arithmetic_encode(string,src_code,k))
-print ("Decoded:",arithmetic_decode(arithmetic_encode(string,src_code,k),src_code,k, len(string)), "==", string,"->",arithmetic_decode(arithmetic_encode(string,src_code,k),src_code,k, len(string))==string)
+string = '0'*10000
+# print ("String to encode and decode:",string)
+# print ("Encoded:",arithmetic_encode(string,src_code,k))
+decoded = arithmetic_decode(arithmetic_encode(string,src_code,k),src_code,k, len(string))
+# print ("Decoded:",decoded, "==", string,"->",decoded == string)
+print(decoded == string)
 # print (arithmetic_decode('11111011',src_code,k, len(string)))
 
+# def encuentraBug():
+#     while True:
+#         for k in range(1,10000000000000):
+#             for n in range(pow(2,k)):
+#                 string = intToBinaryString(n,k)
+#                 if arithmetic_decode(arithmetic_encode(string,src_code,6),src_code,6, len(string)) != string:
+#                     return string
+
+# print (encuentraBug())
