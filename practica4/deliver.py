@@ -139,7 +139,7 @@ def LZ78_encode(txt):
     dic += [None]*((2**max((ceil(log2(len(dic)))),4) - len(dic)))
    
     # print(dic, len(dic))
-    print(lastPosition, dic)
+    # print(lastPosition, dic)
 
     incr = 0
     for r in range(len(txt)):
@@ -149,13 +149,13 @@ def LZ78_encode(txt):
 
         length = 0
         i = -1
-        print(txt, "buclee")
-        print(txt[:r], txt[r:])
+        # print(txt, "buclee")
+        # print(txt[:r], txt[r:])
         for x in range(lastPosition+1):
-            print ("   ",x, len(dic), dic[x])
+            # print ("   ",x, len(dic), dic[x])
             if len(dic[x]) != 1 and (len(dic[x]) < length or len(dic[x]) + r > len(txt)-1):
                 continue
-            print("    ha entrado")
+            # print("    ha entrado")
             lengthAux = 0
             util = True
             for p in range(len(dic[x])):
@@ -165,23 +165,31 @@ def LZ78_encode(txt):
                     util = False
                     break
             if util and lengthAux > length:
-                print (lengthAux)
+                # print (lengthAux)
                 length = lengthAux
                 a = txt[r+length:r+length+1]
                 i = x
 
-        print (" la a es ", a)
+        # print (" la a es ", a)
 
         incr += length
         lastPosition += 1
         if lastPosition >= len(dic):
             dic += [None]*len(dic)
         dic[lastPosition] = txt[r:r+length+1]
-        print (dic)
+        # print (dic)
         tokens.append((i,a))
-        print (tokens)
+        # print (tokens)
 
-    return tokens
+
+    ba = ceil(log2(len(set(txt))))
+    bi = ceil(log2(len(tokens)))
+    bs = ba + bi
+
+    return bs, tokens
+
+def LZ78_decode(tok):
+    return "la berdá es que nunca mavia preguntado ezo"
 
 def LZW_encode(txt):
     tokens = []
@@ -232,7 +240,9 @@ def LZW_encode(txt):
         tokens.append((i))
         # print (tokens)
 
-    return tokens
+    bs = ceil(log2(len(tokens)))
+
+    return bs, list(sorted(set(txt))), tokens
 
 def LZW_decode(dic,tok):
     x = dic[tok[0]] 
@@ -251,18 +261,18 @@ def LZW_decode(dic,tok):
     
 
 
-txt1 = open("yourfilename.txt","r",encoding="utf-8").read()
+# txt1 = open("yourfilename.txt","r",encoding="utf-8").read()
 
-txt2 = "setzejutgesdunjutjatmengenfetgedunpenjat"
+# txt2 = "setzejutgesdunjutjatmengenfetgedunpenjat"
 
-txt3 = 10*"0000000001"
+# txt3 = 10*"0000000001"
 
-txt4 = "aaaaaaaaba"
+# txt4 = "aaaaaaaaba"
 # txt4 = "abac"
 
 # txt = "1234123412323123987"
 # txt = "AABCBBABC"
-txt = txt1
+# txt = txt1
 
 ## LZ77
 
@@ -289,5 +299,6 @@ txt = txt1
 ## LZW
 
 # print()
-print("decoded ",LZW_decode(list(sorted(set(txt))),LZW_encode(txt)) == txt)
+# print(LZW_encode(txt))
+# print("decoded ",LZW_decode(list(sorted(set(txt))),LZW_encode(txt)[2]) == txt)
 # print("original",txt)
