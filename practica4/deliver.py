@@ -25,22 +25,25 @@ def LZ77_encode(txt,s,t):
             tokens.append((offset,length,letter))
             continue
 
-        print("searchBuffer" ,searchBuffer, "lookaheadBuffer", lookaheadBuffer)
+        # print("searchBuffer" ,searchBuffer, "lookaheadBuffer", lookaheadBuffer)
 
+        window = searchBuffer + lookaheadBuffer
         for rSearchBuffer in range(len(searchBuffer)):
             if searchBuffer[rSearchBuffer] == lookaheadBuffer[0]:
-                offset = len(searchBuffer) - rSearchBuffer
-                length = 1
-                window = searchBuffer + lookaheadBuffer
-                while length < len(lookaheadBuffer) and window[rSearchBuffer+length] == lookaheadBuffer[length]:
-                    length += 1
-                if length == len(lookaheadBuffer):
-                    length -= 1
-                letter = lookaheadBuffer[length]
-                incr += length
-                break
+                offsetAux = len(searchBuffer) - rSearchBuffer
+                lengthAux = 1
+                while lengthAux < len(lookaheadBuffer) and window[rSearchBuffer+lengthAux] == lookaheadBuffer[lengthAux]:
+                    lengthAux += 1
+                if lengthAux == len(lookaheadBuffer):
+                    lengthAux -= 1
+                letterAux = lookaheadBuffer[lengthAux]
+                
+                if lengthAux > length:
+                    length = lengthAux
+                    offset = offsetAux
+                    letter = letterAux
 
-        
+        incr += length
         tokens.append((offset,length,letter))
 
     print(ceil(log2(s+1)),ceil(log2(t)),ceil(log2(len(set(txt)))))
@@ -126,6 +129,12 @@ def LZSS_decode(tok):
     return x
 
 
+def LZ78_encode():
+    tokens = []
+    dic = {}
+    
+
+
 txt1 = open("yourfilename.txt","r",encoding="utf-8").read()
 
 txt2 = "setzejutgesdunjutjatmengenfetgedunpenjat"
@@ -136,18 +145,19 @@ txt4 = "aaaaaaaaba"
 # txt4 = "abac"
 
 txt = "1234123412323123"
-txt = txt3
+txt = "AABCBBABC"
+txt = txt2
 
-# _, tok = LZ77_encode(txt,8,16)
-
-# print (tok)
-
-# print (txt)
-# print(LZ77_decode(tok))
-
-_, tok = LZSS_encode(txt,16,8,2)
+_, tok = LZ77_encode(txt,4096,16)
 
 print (tok)
 
 print (txt)
-print(LZSS_decode(tok))
+print(LZ77_decode(tok))
+
+# _, tok = LZSS_encode(txt,16,8,2)
+
+# print (tok)
+
+# print (txt)
+# print(LZSS_decode(tok))
